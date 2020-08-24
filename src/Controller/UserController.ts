@@ -29,9 +29,6 @@ export class UserController {
         catch(err){
             res.status(err.errorCode || 400).send({message: err.message})
         }
-        finally{
-            await UserDatabase.destroyConnection()
-        }
     }
 
     public async signupAdmin(req: Request, res: Response) {
@@ -51,9 +48,6 @@ export class UserController {
         catch(err){
             res.status(err.errorCode || 400).send({message: err.message})
         }
-        finally {
-            await UserDatabase.destroyConnection()
-        }
     }
 
     public async login(req: Request, res: Response) {
@@ -67,9 +61,6 @@ export class UserController {
         }
         catch(err){
             res.status(err.errorCode || 400).send({message: err.message})
-        }
-        finally {
-            await UserDatabase.destroyConnection()
         }
     }
 }

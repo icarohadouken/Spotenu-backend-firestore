@@ -84,17 +84,6 @@ export class UserBusiness {
         )
     }
 
-    public async changeNickname(token: string, nickname: string) {
-        if (!token) {
-            throw new UnauthorizedError("Missing access token")
-        }
-
-        const tokenData = this.authenticator.verifyToken(token)
-
-        await this.userDatabase.changeNickName(tokenData.id, nickname)
-           
-    }
-
     public async login(
         emailOrNickname: string,
         password: string
