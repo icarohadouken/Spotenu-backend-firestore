@@ -14,6 +14,16 @@ app.use(cors({origin: true}))
 
 app.use(express.json())
 
+const admin = require("firebase-admin");
+
+const serviceAccount = require("../serviceAccountKey.json");
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://spotenu-e49aa.firebaseio.com"
+});
+
+export const db = admin.firestore();
 
 const server = app.listen(process.env.PORT || 3006, () => {
     if (server) {

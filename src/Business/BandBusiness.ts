@@ -41,7 +41,7 @@ export class BandBusiness {
         const hashPassword = await this.hashManager.hash(password)
 
         await this.bandDatabase.createBand(
-            new Band(id, name, nickname, description, hashPassword, 0, email)
+            new Band(id, name, nickname, description, hashPassword, false, email)
         )
     }
 
@@ -77,7 +77,7 @@ export class BandBusiness {
 
         const checkBand = await this.bandDatabase.getBandById(bandId)
 
-        if(checkBand?.getAuthorization() === 1){
+        if(checkBand?.getAuthorization() === true){
             throw new GenericError("Band already approved")
         }
 
@@ -92,7 +92,7 @@ export class BandBusiness {
             throw new InvalidParameterError("Missing input")
         }
 
-        const band = await this.bandDatabase.getBandByNickname(nickname)
+        const band = await this.bandDatabase.loginBand(nickname)
 
         if(!band){
             throw new NotFoundError("Band not found")
@@ -104,7 +104,7 @@ export class BandBusiness {
             throw new InvalidParameterError("Invalid password")
         }
 
-        if(band.getAuthorization() === 0){
+        if(band.getAuthorization() === false){
             throw new UnauthorizedError("Band need to be approved by an admin")
         }
 

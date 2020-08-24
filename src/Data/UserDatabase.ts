@@ -1,8 +1,7 @@
-import {BaseDatabase} from './BaseDatabase'
-import {User} from '../Model/User'
+import { db } from '../index'
+import { User } from '../Model/User'
 
-export class UserDatabase extends BaseDatabase {
-    protected tableName: string = "User"
+export class UserDatabase {
 
     private toModel(dbModel?: any): User | undefined {
         return (
@@ -19,43 +18,47 @@ export class UserDatabase extends BaseDatabase {
     }
 
     public async createUser(user: User): Promise<void> {
-        await super.getConnection()
-            .insert(user)
-            .into(this.tableName)
+        await db.collection('User').doc(user.getId()).set({
+            id: user.getId(),
+            name: user.getName(),
+            nickname: user.getNickname(),
+            email: user.getEmail(),
+            password: user.getPassword(),
+            role: user.getRole()
+        })
     }
 
     public async getUserByEmailOrNickname(emailOrNickname: string): Promise<User | undefined> {
-        const result = await this.getConnection()
-            .select("*")
-            .from(this.tableName)
-            .where({email: emailOrNickname})
 
-            if(!result[0]){
-                const nickname = await this.getConnection()
-                    .select("*")
-                    .from(this.tableName)
-                    .where({ nickname: emailOrNickname})
+        const users = db.collection('User')
 
-                return this.toModel(nickname[0])
-            }
+        const results = await users.where('email', '==', emailOrNickname).get();
 
-        return this.toModel(result[0])
+        const user =  results.docs.map(doc => ({
+            ...doc.data()
+        }))
+
+        if(!user[0]){
+            const nickname = await users.where('nickname', '==', emailOrNickname).get()
+            const userByNickname = nickname.docs.map(doc => ({
+                ...doc.data()
+            }))
+
+            return this.toModel(userByNickname[0])
+        }
+
+        return this.toModel(user[0])
     }
 
     public async getUserById(id: string): Promise<User | undefined> {
-        const result = await this.getConnection()
-            .select("*")
-            .from(this.tableName)
-            .where({id})
-        return result[0]
-    }
+        const users = db.collection('User')
 
-    public async changeNickName(id: string, newNickname: string): Promise<void>{
-        await this.getConnection()
-            .raw(`
-                UPDATE ${this.tableName}
-                SET nickname = '${newNickname}'
-                where id = '${id}'
-            `)
+        const results = await users.where('id', "==", id).get()
+
+        const user = results.docs.map(doc => ({
+            ...doc.data()
+        }))
+
+        return this.toModel(user[0])
     }
 }

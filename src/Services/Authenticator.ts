@@ -49,5 +49,5 @@ interface AuthenticationData {
 
 interface AuthenticationDataBand{
     id: string
-    authorization: number
+    authorization: boolean
 }

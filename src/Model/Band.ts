@@ -5,7 +5,7 @@ export class Band {
         private nickname: string,
         private description: string,
         private password: string,
-        private authorization: number,
+        private authorization: boolean,
         private email: string
     ) {}
 
@@ -29,7 +29,7 @@ export class Band {
         return this.password
     }
 
-    getAuthorization(): number{
+    getAuthorization(): boolean{
         return this.authorization
     }
 

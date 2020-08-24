@@ -34,9 +34,6 @@ export class BandController{
         catch(err){
             res.status(err.errorCode || 400).send({message: err.message})
         }
-        finally{
-            await BandDatabase.destroyConnection()
-        }
     }
 
     public async getBands(req: Request, res: Response) {
@@ -47,9 +44,6 @@ export class BandController{
         }
         catch(err){
             res.status(err.errorCode || 400).send({message: err.message})
-        }
-        finally {
-            await BandDatabase.destroyConnection()
         }
     }
 
@@ -67,9 +61,6 @@ export class BandController{
         catch(err){
             res.status(err.errorCode || 400).send({message: err.message})
         }
-        finally {
-            await BandDatabase.destroyConnection()
-        }
     }
 
     public async login(req: Request, res: Response) {
@@ -83,9 +74,6 @@ export class BandController{
         }
         catch(err){
             res.status(err.errorCode || 400).send({message: err.message})
-        }
-        finally {
-            await BandDatabase.destroyConnection()
         }
     }
 }
