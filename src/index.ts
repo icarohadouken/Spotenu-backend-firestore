@@ -18,7 +18,11 @@ app.use(express.json())
 const serviceAccount = require("../serviceAccountKey.json");
 
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.cert({
+        privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        projectId: process.env.FIREBASE_PROJECT_ID
+    }),
     databaseURL: "https://spotenu-e49aa.firebaseio.com",
     storageBucket: "spotenu-e49aa.appspot.com"
 });
