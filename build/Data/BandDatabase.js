@@ -59,7 +59,7 @@ class BandDatabase {
             if (!band[0]) {
                 const nickname = yield index_1.db.collection('Band').where('nickname', "==", login).get();
                 const bandByNickname = nickname.docs.map(band => (Object.assign({}, band.data())));
-                return bandByNickname;
+                return this.toModel(bandByNickname[0]);
             }
             return this.toModel(band[0]);
         });
