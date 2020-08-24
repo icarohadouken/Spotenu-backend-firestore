@@ -31,7 +31,7 @@ export class BandDatabase {
         })
     }
 
-    public async getBands(): Promise<Band[]> {
+    public async getBands(): Promise<any[]> {
         const result = await db.collection('Band').get()
 
         return result.docs.map(band => ({
@@ -67,7 +67,7 @@ export class BandDatabase {
                 ...band.data()
             }))
 
-            return bandByNickname
+            return this.toModel(bandByNickname[0])
         }
 
         return this.toModel(band[0])
