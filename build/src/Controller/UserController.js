@@ -9,30 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BandController = void 0;
-const BandDatabase_1 = require("../Data/BandDatabase");
-const BandBusiness_1 = require("../Business/BandBusiness");
-const HashManager_1 = require("../Services/HashManager");
+exports.UserController = void 0;
+const UserBusiness_1 = require("../Business/UserBusiness");
+const UserDatabase_1 = require("../Data/UserDatabase");
 const Authenticator_1 = require("../Services/Authenticator");
 const IdGenerator_1 = require("../Services/IdGenerator");
-class BandController {
+const HashManager_1 = require("../Services/HashManager");
+class UserController {
     signup(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield BandController.BandBusiness.signup(req.body.name, req.body.nickname, req.body.description, req.body.password, req.body.email);
-                res.status(200).send({
-                    message: "Band created"
-                });
-            }
-            catch (err) {
-                res.status(err.errorCode || 400).send({ message: err.message });
-            }
-        });
-    }
-    getBands(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const result = yield BandController.BandBusiness.getBands(req.headers.authorization);
+                const result = yield UserController.UserBusiness.signup(req.body.name, req.body.nickname, req.body.email, req.body.password);
                 res.status(200).send(result);
             }
             catch (err) {
@@ -40,12 +27,12 @@ class BandController {
             }
         });
     }
-    approveBand(req, res) {
+    signupAdmin(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield BandController.BandBusiness.authorizeBand(req.headers.authorization, req.query.id);
+                const result = yield UserController.UserBusiness.signupAdmin(req.headers.authorization, req.body.name, req.body.nickname, req.body.email, req.body.password);
                 res.status(200).send({
-                    message: "Band approved sucessfully"
+                    message: "User created"
                 });
             }
             catch (err) {
@@ -56,7 +43,7 @@ class BandController {
     login(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield BandController.BandBusiness.login(req.body.login, req.body.password);
+                const result = yield UserController.UserBusiness.login(req.body.login, req.body.password);
                 res.status(200).send(result);
             }
             catch (err) {
@@ -65,6 +52,6 @@ class BandController {
         });
     }
 }
-exports.BandController = BandController;
-BandController.BandBusiness = new BandBusiness_1.BandBusiness(new BandDatabase_1.BandDatabase(), new HashManager_1.HashManager(), new Authenticator_1.Authenticator(), new IdGenerator_1.IdGenerator());
-//# sourceMappingURL=BandController.js.map
+exports.UserController = UserController;
+UserController.UserBusiness = new UserBusiness_1.UserBusiness(new UserDatabase_1.UserDatabase(), new HashManager_1.HashManager(), new Authenticator_1.Authenticator(), new IdGenerator_1.IdGenerator());
+//# sourceMappingURL=UserController.js.map

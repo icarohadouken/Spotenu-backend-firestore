@@ -5,6 +5,7 @@ import dotenv from 'dotenv'
 import {userRouter} from './Router/UserRouter'
 import {bandRouter} from './Router/BandRouter'
 import {AddressInfo} from 'net'
+import * as admin from 'firebase-admin'
 
 dotenv.config()
 
@@ -14,13 +15,12 @@ app.use(cors({origin: true}))
 
 app.use(express.json())
 
-const admin = require("firebase-admin");
-
 const serviceAccount = require("../serviceAccountKey.json");
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://spotenu-e49aa.firebaseio.com"
+    databaseURL: "https://spotenu-e49aa.firebaseio.com",
+    storageBucket: "spotenu-e49aa.appspot.com"
 });
 
 export const db = admin.firestore();
