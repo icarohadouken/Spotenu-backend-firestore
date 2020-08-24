@@ -15,8 +15,6 @@ app.use(cors({origin: true}))
 
 app.use(express.json())
 
-const serviceAccount = require("../serviceAccountKey.json");
-
 admin.initializeApp({
     credential: admin.credential.cert({
         privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
